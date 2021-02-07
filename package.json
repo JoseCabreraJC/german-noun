@@ -1,0 +1,21 @@
+{
+  "name": "german-generator",
+  "version": "1.0.0",
+  "description": "german noun generator",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "german",
+    "noun",
+    "generator"
+  ],
+  "author": "Josecinio",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^3.11.0",
+    "fastify-cors": "^5.2.0"
+  }
+}

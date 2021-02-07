@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>German Noun Generator</title>
+  </head>
+  <body>
+    <div id="app">
+      <form v-on:submit.prevent="checkArt">
+        <input v-model="artikel" type="text" />
+        <label id="texto">{{noun.noun}}.</label>
+        <label id="texto">In English: {{noun.translation}}</label>
+        <button @click="checkArt">Check</button>
+        <label v-if="artChequeado">{{ correcto ? 'Correct!' : 'Wrong!'}}</label>
+      </form>
+      <form v-on:submit.prevent="checkPlu">
+        <label id="texto">Die </label>
+        <input v-model="plural" type="text" />
+        <label id="texto">. Singular in English: {{noun.translation}}</label>
+        <button @click="checkPlu">Check</button>
+        <label v-if="pluChequeado">{{ correcto ? 'Correct!' : 'Wrong!'}}</label>
+      </form>
+      <button @click="apiCall">Api Call</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          noun: {},
+          artikel: "",
+          plural: "",
+          artChequeado: false,
+          pluChequeado: false,
+          artCorrecto: false,
+          pluCorrecto: false,
+        },
+        methods: {
+          apiCall() {
+            this.artChequeado = false;
+            this.pluChequeado = false;
+
+            fetch("http://127.0.0.1:3000/")
+              .then(response => response.json())
+              .then(data => {
+                this.noun = data;
+                console.log(this.noun);
+              });
+            console.log(this.noun);
+          },
+          checkArt() {
+            this.artChequeado = true;
+            this.artikel = this.artikel.trim();
+            if (
+              this.artikel.toLowerCase().trim() ==
+              this.noun.artikel.toLowerCase()
+            ) {
+              this.artCorrecto = true;
+            } else {
+              this.artCorrecto = false;
+            }
+          },
+          checkPlu() {
+            this.pluChequeado = true;
+            this.plural = this.plural.trim();
+            if (
+              this.plural.toLowerCase().trim() == this.noun.plural.toLowerCase()
+            ) {
+              this.pluCorrecto = true;
+            } else {
+              this.pluCorrecto = false;
+            }
+          },
+        },
+        mounted() {
+          this.apiCall();
+        },
+      });
+    </script>
+  </body>
+</html>
